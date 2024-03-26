@@ -1,0 +1,22 @@
+replacer_host:
+  value: 192.168.31.87
+  matchers:
+    - path: ../docker/sofa_registry/application.properties
+      matchers: 
+      - jdbc.url=jdbc:mysql://{}:3306/registrymetadb
+    - path: ../docker/sofa_lookout/foo.properties
+      matchers: 
+      - gateway.metrics.exporter.es.host={}
+      - metrics-server.spring.data.jest.uri=http://{}:9200
+    - path: ../kc-sofastack-demo/stock-mng/src/main/resources/application.properties
+      matchers:
+      - spring.datasource.url=jdbc:mysql://{}:3306/stock_db?characterEncoding=utf8
+      - com.alipay.sofa.rpc.registry.address=sofa://{}:9603
+      - com.alipay.sofa.tracer.zipkin.base-url=http://{}:9411
+      no_match_behaviour: append
+    - path: ../kc-sofastack-demo/balance-mng/balance-mng-bootstrap/src/main/resources/application.properties
+      matchers:
+      - com.alipay.sofa.rpc.registry.address=sofa://{}:9603
+      - com.alipay.sofa.tracer.zipkin.base-url=http://{}:9411
+      - spring.datasource.url=jdbc:mysql://{}:3306/balance_db?characterEncoding=utf8
+      no_match_behaviour: append

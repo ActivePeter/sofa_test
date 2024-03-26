@@ -1,0 +1,8 @@
+---
+- hosts: web
+  tasks:
+    - name: Copy this dir to target nodes
+      copy:
+        src: ../../sofa_test
+        dest: /root/sofa_test
+      become: yes
