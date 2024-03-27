@@ -1,26 +1,46 @@
 import os
 import yaml
 
+# chdir to the directory of this script
+CUR_FPATH = os.path.abspath(__file__)
+CUR_FDIR = os.path.dirname(CUR_FPATH)
+os.chdir(CUR_FDIR)
+
+import re
+
 class FileReplacer:
     def __init__(self, config):
         self.config = config
 
-    def replace_content(self):
-        for item in self.config['replacer_host']:
-            file_path = item['path']
+    def replace_one(self,one):
+        for file_config in one['files']:
+            file_path = file_config['path']
+            appends=[]
+            need_append='no_match_behaviour' in file_config and file_config['no_match_behaviour'] == 'append'
             if os.path.exists(file_path):
                 with open(file_path, 'r') as file:
                     content = file.read()
-                    for matcher in item['matchers']:
-                        old_value = matcher.format(self.config['replacer_host']['value'])
-                        content = content.replace(old_value, self.config['replacer_host']['value'])
+                    for matcher in file_config['matchers']:
+                        pattern = re.escape(matcher).replace(r'\{\}', r'(.*)')
+                        if not re.search(pattern, content):
+                            if need_append:
+                                line = matcher.format(one['value']) + '\n'
+                                appends.append(line)
+                        else:
+                            content = re.sub(pattern, matcher.format(one['value']), content)
                 with open(file_path, 'w') as file:
                     file.write(content)
-            elif 'no_match_behaviour' in item and item['no_match_behaviour'] == 'append':
-                with open(file_path, 'a') as file:
-                    for matcher in item['matchers']:
-                        line = matcher.format(self.config['replacer_host']['value']) + '\n'
-                        file.write(line)
+
+            with open(file_path, 'a') as file:
+                for append in appends:
+                    print("> append",append)
+                    file.write('\n'+append)
+
+    def replace_content(self):
+        for one_replace_key in self.config:
+            one_replace=self.config[one_replace_key]
+            self.replace_one(one_replace)
+        
 
 if __name__ == "__main__":
     with open("config_replacer.yml", 'r') as file:

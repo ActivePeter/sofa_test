@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  sofa_demo_stock:
+    image: sofa_demo_app:latest
+    container_name: sofa_demo_stock
+    command: java -jar /app/stock-mng-0.0.1-SNAPSHOT.jar
+    network_mode: host
+
+  sofa_demo_balance:
+    image: sofa_demo_app:latest
+    container_name: sofa_demo_balance
+    command: java -jar /app/balance-mng-bootstrap-0.0.1-SNAPSHOT.jar
+    network_mode: host

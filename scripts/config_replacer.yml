@@ -1,6 +1,6 @@
-replacer_host:
+replace_host:
   value: 192.168.31.87
-  matchers:
+  files:
     - path: ../docker/sofa_registry/application.properties
       matchers: 
       - jdbc.url=jdbc:mysql://{}:3306/registrymetadb
@@ -20,3 +20,12 @@ replacer_host:
       - com.alipay.sofa.tracer.zipkin.base-url=http://{}:9411
       - spring.datasource.url=jdbc:mysql://{}:3306/balance_db?characterEncoding=utf8
       no_match_behaviour: append
+replace_db_pw:
+  value: mysqltest
+  files:
+    - path: ../kc-sofastack-demo/stock-mng/src/main/resources/application.properties
+      matchers: 
+      - spring.datasource.password={}
+    - path: ../kc-sofastack-demo/balance-mng/balance-mng-bootstrap/src/main/resources/application.properties
+      matchers: 
+      - spring.datasource.password={}
