@@ -14,7 +14,7 @@ RUN tar -zxvf registry-all.tgz
 
 WORKDIR /app/registry-all
 
-COPY application.properties conf
+# COPY application.properties conf
 
 RUN chmod +x -R bin
 

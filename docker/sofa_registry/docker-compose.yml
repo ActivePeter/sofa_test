@@ -9,4 +9,6 @@ services:
     #   - "9622:9622"
     #   - "9603:9603"
     network_mode: "host"
+    volumes:
+      - 'application.properties': /app/conf/application.properties
 

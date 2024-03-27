@@ -1,5 +1,5 @@
 replace_host:
-  value: 192.168.31.87
+  value: 192.168.232.129
   files:
     - path: ../docker/sofa_registry/application.properties
       matchers: 
@@ -21,7 +21,7 @@ replace_host:
       - spring.datasource.url=jdbc:mysql://{}:3306/balance_db?characterEncoding=utf8
       no_match_behaviour: append
 replace_db_pw:
-  value: mysqltest
+  value: 
   files:
     - path: ../kc-sofastack-demo/stock-mng/src/main/resources/application.properties
       matchers: 

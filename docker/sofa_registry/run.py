@@ -1,11 +1,15 @@
 import os
 import docker
+import requests
+import time
 
 CUR_FPATH = os.path.abspath(__file__)
 CUR_FDIR = os.path.dirname(CUR_FPATH)
 
 # chdir to the directory of this script
 os.chdir(CUR_FDIR)
+
+HOST_IP = "192.168.232.129"
 
 # 下载
 # https://github.com/sofastack/sofa-registry/releases/download/v6.1.9/registry-all.tgz
@@ -34,7 +38,23 @@ def run_container():
     os.system("docker-compose down")
     os.system("docker-compose up -d")
 
-    print("Docker 容器已启动")
+def checks():
+    #test sofa registry
+    time.sleep(5)
+    # 200 curl http://localhost:9615/health/check
+    # 200 curl http://localhost:9622/health/check
+    # 200 curl http://localhost:9603/health/check
+    def check(path):
+        res=requests.get(path)
+        print(res.status_code)
+        if res.status_code==200:
+            print("success")
+        else:
+            print("fail")
+    check(f"http://{HOST_IP}:9615/health/check")
+    check(f"http://{HOST_IP}:9622/health/check")
+    check(f"http://{HOST_IP}:9603/health/check")
+
 
 def ls_images():
     client = docker.from_env()
@@ -46,8 +66,8 @@ def ls_images():
 
 if __name__ == "__main__":
     # 创建数据库
-    os.system('echo "create database registrymetadb " | mysql -h 192.168.31.87 -u root -pmysqltest')
-    os.system('mysql -h 192.168.31.87 -u root -pmysqltest registrymetadb < create_table.sql')
+    os.system(f'echo "create database registrymetadb " | mysql -h {HOST_IP} -u root -pmysqltest')
+    os.system(f'mysql -h {HOST_IP} -u root -pmysqltest registrymetadb < create_table.sql')
     
     # use python
     
@@ -66,3 +86,5 @@ if __name__ == "__main__":
 
     # # 运行 Docker 容器
     run_container()
+
+    checks()
