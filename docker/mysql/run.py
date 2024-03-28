@@ -8,5 +8,5 @@ CUR_FDIR = os.path.dirname(CUR_FPATH)
 os.chdir(CUR_FDIR)
 
 os.system('docker-compose down')
-os.system('docker-compose up -d')
+os.system('docker-compose up  --force-recreate -d')
 

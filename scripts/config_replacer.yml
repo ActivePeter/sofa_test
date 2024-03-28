@@ -20,6 +20,9 @@ replace_host:
       - com.alipay.sofa.tracer.zipkin.base-url=http://{}:9411
       - spring.datasource.url=jdbc:mysql://{}:3306/balance_db?characterEncoding=utf8
       no_match_behaviour: append
+    - path: ../docker/demo_app/run.py
+      matchers:
+      - DATABASE_HOST = "{}"
 replace_db_pw:
   value: 
   files:
@@ -29,3 +32,6 @@ replace_db_pw:
     - path: ../kc-sofastack-demo/balance-mng/balance-mng-bootstrap/src/main/resources/application.properties
       matchers: 
       - spring.datasource.password={}
+    - path: ../docker/demo_app/run.py
+      matchers: 
+      - DATABASE_PW = "{}"
