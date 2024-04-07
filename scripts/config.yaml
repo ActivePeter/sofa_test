@@ -1,4 +1,0 @@
-mysql_host: 192.168.31.96
-mysql_port: 3306
-mysql_pw: mysqltest
-mysql_user: root

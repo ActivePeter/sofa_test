@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  sofa_registry:
+    image: sofa_registry:latest
+    container_name: sofa_registry
+    # ports:
+    #   - "9615:9615"
+    #   - "9622:9622"
+    #   - "9603:9603"
+    network_mode: "host"
+    volumes:
+      - 'application.properties': /app/conf/application.properties
+
