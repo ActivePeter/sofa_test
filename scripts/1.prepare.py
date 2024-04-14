@@ -133,6 +133,11 @@ def prepare_sofa_registy():
 prepare_sofa_registy()
 
 
+def prepare_sofa_boot():
+    os_system_sure("python3 ./1.1install_sofa_boot.py")
+prepare_sofa_boot()
+
+
 ### prepare demo prj
 def prepare_demo_prj():
     if not os.path.exists("../kc-sofastack-demo"):
@@ -192,7 +197,7 @@ def prepare_demo_prj():
     }).replace_content()
 
     os.chdir("../kc-sofastack-demo")
-    os_system_sure("mvn package -DskipTests")
+    os_system_sure("mvn clean package -DskipTests")
 
     if MYSQL_CON.is_connected():
         try:

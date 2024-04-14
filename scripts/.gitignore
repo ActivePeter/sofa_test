@@ -2,3 +2,5 @@ registry-all.tgz
 registry-all
 logs
 log
+sofa-boot-3.1.4
+config.yaml

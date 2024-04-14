@@ -38,6 +38,8 @@ JAVA_OPTS="$JAVA_OPTS -XX:-OmitStackTraceInFastThrow -XX:ParallelGCThreads=4"
 if [[ -n "$DEBUG_PORT" ]]; then
   JAVA_OPTS="$JAVA_OPTS -agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=$DEBUG_PORT"
 fi
+#--add-opens java.base/java.lang=ALL-UNNAMED \
+JAVA_OPTS="$JAVA_OPTS --add-opens java.base/java.lang=ALL-UNNAMED"
 
 # start
 echo "Command: java ${JAVA_OPTS} -jar ${APP_JAR} ${SPRINGBOOT_OPTS}"
