@@ -133,6 +133,9 @@ def prepare_sofa_registy():
 prepare_sofa_registy()
 
 
+def prepare_sofa_boot():
+    os_system_sure("python3 1.1prepare_sofaboot.py")
+
 ### prepare demo prj
 def prepare_demo_prj():
     if not os.path.exists("../kc-sofastack-demo"):
