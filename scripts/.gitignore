@@ -2,3 +2,9 @@ registry-all.tgz
 registry-all
 logs
 log
+env
+checkpoint-dir
+apache-maven-3.9.6
+bellsoft-jdk17.0.10+14-linux-amd64-crac.deb
+apache-maven-3.9.6-bin.tar.gz
+crac_config

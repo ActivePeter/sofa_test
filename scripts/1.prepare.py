@@ -75,39 +75,24 @@ class FileReplacer:
             self.replace_one(one_replace_key,one_replace)
 
 
+bins=[
+    "java",
+    "javac",
+    "jcmd"
+]
+OPENJDK="/usr/lib/jvm/java-17-openjdk-amd64/"
+# swicth back to openjdk
+for bin in bins:
+    # os_system_sure(f"update-alternatives --install /usr/bin/{bin} {bin} {OPENJDK}bin/{bin} 1")
+    os_system_sure(f"update-alternatives --set {bin} {OPENJDK}bin/{bin}")
+
 
 ### check mysql connection
-import mysql.connector
-from mysql.connector import Error
-MYSQL_CON=None
 def check_mysql_connection():
-    global MYSQL_CON
-    try:
-        # 尝试连接到 MySQL 数据库
-        connection = mysql.connector.connect(
-            host=MYSQL_HOST,
-            port=MYSQL_PORT,
-            user=MYSQL_USER,
-            password=MYSQL_PASSWORD
-        )
-        if connection.is_connected():
-            print("成功连接到 MySQL 数据库")
-            MYSQL_CON=connection
-        else:
-            print("无法连接到 MySQL 数据库")
-            exit(1)
-
-            # 可以执行其他操作或查询
-            # 例如：cursor = connection.cursor()
-            # 然后执行查询：cursor.execute("SELECT * FROM table_name")
-    except Error as e:
-        print(f"连接 Mysql 错误: {e}")
-        exit(1)
-
-        # # 确保关闭连接
-        # if connection.is_connected():
-        #     connection.close()
-        #     print("连接已关闭")
+    command = f'mysql -h {MYSQL_HOST} -P {MYSQL_PORT} -u {MYSQL_USER} -p{MYSQL_PASSWORD}  -e "SELECT 1;" && exit'
+    os_system_sure(command)
+def run_sql_on_mysql():
+    os.system(f'mysql -h {MYSQL_HOST} -P {MYSQL_PORT} -u {MYSQL_USER} -p{MYSQL_PASSWORD} < DDL.sql && exit')
 check_mysql_connection()
 
 
@@ -134,7 +119,8 @@ prepare_sofa_registy()
 
 
 def prepare_sofa_boot():
-    os_system_sure("python3 1.1prepare_sofaboot.py")
+    os_system_sure("python3 1.2prepare_sofaboot.py")
+prepare_sofa_boot()
 
 ### prepare demo prj
 def prepare_demo_prj():
@@ -197,20 +183,7 @@ def prepare_demo_prj():
     os.chdir("../kc-sofastack-demo")
     os_system_sure("mvn package -DskipTests")
 
-    if MYSQL_CON.is_connected():
-        try:
-            cursor = MYSQL_CON.cursor()
-            # 读取 SQL 文件内容
-            with open("DDL.sql", 'r') as file:
-                sql_script = file.read()
-            # 执行 SQL 脚本
-            cursor.execute(sql_script, multi=True)
-            # MYSQL_CON.commit()
-        except Error as e:
-            print(f"执行 SQL 脚本错误: {e}")
-    else:
-        print("无法连接到 MySQL 数据库")
-        exit(1)
+    run_sql_on_mysql()
 
     os.chdir("../scripts")
     
@@ -218,6 +191,4 @@ def prepare_demo_prj():
 prepare_demo_prj()
 
 
-    
-
-    
+os_system_sure("python3 1.1prepare_crac.py")

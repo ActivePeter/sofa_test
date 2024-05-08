@@ -1,3 +1,5 @@
+crac_install_dir: /usr/jdk_crac
+
 mysql_host: 192.168.31.96
 mysql_port: 3306
 mysql_pw: mysqltest
